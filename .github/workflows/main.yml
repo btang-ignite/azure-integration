@@ -34,12 +34,6 @@ jobs:
           login-server: zensandbox.azurecr.io # default: index.docker.io
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with: 
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: zensandbox.azurecr.io/hello-world:latest
+      - run: |
+          docker build . -t zensandbox.azurecr.io/hello-world:${{ github.sha }}
+          docker push zensandbox.azurecr.io/hello-world:${{ github.sha }}
